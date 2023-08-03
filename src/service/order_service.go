@@ -9,15 +9,17 @@ import (
 func PlaceOrder(customer *dao.Customer, shipmentID int) error {
 	shipmentExisted := false
 	for _, shipment := range dao.Shipments.AllShipments {
-		if shipmentID == shipment.ID {
+		if shipmentID == shipment.ID && shipment.StockCount > 0 {
 			shipmentExisted = true
 			order := dao.NewOrder(customer, shipment)
+			shipment.StockCount--
+
 			dao.OrderDatabaseInstance.AddOrder(order)
 			break
 		}
 	}
 	if !shipmentExisted {
-		return errors.New("ShipmentID not exist:" + strconv.Itoa(shipmentID))
+		return errors.New("ShipmentID not existed or out of stock:" + strconv.Itoa(shipmentID))
 	} else {
 		return nil
 	}

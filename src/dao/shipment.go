@@ -6,10 +6,11 @@ import (
 )
 
 type Shipment struct {
-	ID       int
-	Name     string
-	Category Category
-	Price    int
+	ID         int
+	Name       string
+	Category   Category
+	Price      int
+	StockCount int
 }
 
 var nextID = 0
@@ -25,6 +26,8 @@ func NewShipment() *Shipment {
 	s.ID = nextID
 	s.Price = rand.Intn(100) + 100
 	s.Category = Category(rand.Intn(4))
+	s.StockCount = rand.Intn(10) + 5
+
 	nextID++
 	return s
 }
